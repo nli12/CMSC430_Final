@@ -1,0 +1,7 @@
+(define (dumb-division a b)
+ (if (> a 0)
+ (+ (dumb-division (- a b) b) 1)
+ 0  
+))
+
+(dumb-division 9999999 0)

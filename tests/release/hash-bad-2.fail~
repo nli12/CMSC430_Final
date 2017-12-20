@@ -1,0 +1,7 @@
+(begin
+(define h 1)
+(hash-set! h 'a 'b)
+(hash-set! h 'a 'z)
+(hash-set! h 'c 'd)
+(hash-ref h 'a)
+)
