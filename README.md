@@ -141,23 +141,23 @@ The last argument need not be a list, in which case the result is an “improper
 
 1. Divide by Zero
  
- > The division prim within header.cpp now contains an additional check insuring that the given divisor is a non-zero value. If a zero divisor is provided, the resulting binary will throw a runtime error. Two tests were written to test this error. The first test tries to directly divide the 4 integer datum by the 0 integer datum, while the second test first binds the two integers to variables. The binaries produced in both tests correctly throw runtime errors. 
+ > The division prim within header.cpp now contains an additional check insuring that the given divisor is a non-zero value. If a zero divisor is provided, the resulting binary will throw a runtime error. Two tests were written to test this error, dividezero-1.fail and dividezero-2.fail. The first test tries to directly divide the 4 integer datum by the 0 integer datum, while the second test first binds the two integers to variables. The binaries produced in both tests correctly throw runtime errors. 
  
 2. Memory-use cap (256MB) is exceeded
 
-> The global variable "allocated" is added to header.cpp that tracks the amount of memory used. Every place memory is allocated, the "allocated" variable is incremented and a check is done to ensure that it is not above the memory cap (in bytes). If "allocated" grows to be larger than the memory cap, a runtime error is thrown. Two tests were written to test this error. The first test tries to generate the 25th fibonacci number, while the second test creates an infinite loop. The binaries produced in both tests correctly throw runtime errors. 
+> The global variable "allocated" is added to header.cpp that tracks the amount of memory used. Every place memory is allocated, the "allocated" variable is incremented and a check is done to ensure that it is not above the memory cap (in bytes). If "allocated" grows to be larger than the memory cap, a runtime error is thrown. Two tests were written to test this error, memcap-fib.fail and memcap-infinite.fail. The first test tries to generate the 25th fibonacci number, while the second test creates an infinite loop. The binaries produced in both tests correctly throw runtime errors. 
 
 3. Use of not-yet-initialized letrec or letrec\* variable
 
-> A check is added to the alpha renaming pass to ensure that, if there is no corresponding variable binding in the environment when that variable is first used, the program throws a runtime error. Two tests were written to test this error. The first test attempts to use an uninitialized letrec variable, while the second test attempts to use an unintialized letrec\* variable. The binaries produced in both tests correctly throw runtime errors. 
+> A check is added to the alpha renaming pass to ensure that, if there is no corresponding variable binding in the environment when that variable is first used, the program throws a runtime error. Two tests were written to test this error, unbound-1.fail and unbound-2.fail. The first test attempts to use an uninitialized letrec variable, while the second test attempts to use an unintialized letrec\* variable. The binaries produced in both tests correctly throw runtime errors. 
 
 4. Out of bounds vector access
 
-> A check is added to vector-ref and vector-set! to ensure that any attempts to access an out of bounds vector slot throws a runtime error. Because the length is already stored in the first slot of the vector struture, no additional modifications need to be made to the vectors themselves. Two tests were written to test this error. The first test attempts to access an out of bounds vector slot with vector-ref, while the second test attempts to access an out of bounds vector slot with vector-set!. The binaries produced in both tests correctly throw runtime errors. 
+> A check is added to vector-ref and vector-set! to ensure that any attempts to access an out of bounds vector slot throws a runtime error. Because the length is already stored in the first slot of the vector struture, no additional modifications need to be made to the vectors themselves. Two tests were written to test this error, vector-1.fail and vector-2.fail. The first test attempts to access an out of bounds vector slot with vector-ref, while the second test attempts to access an out of bounds vector slot with vector-set!. The binaries produced in both tests correctly throw runtime errors. 
 
 5. Integer Overflow
 
-> When converting a Racket number to an LLVM integer, the compiler inserts a run-time error if the Racket number is greater than the maximum LLVM integer size or less than the minimum LLVM integer size. Additional checks are also added to the addition, subtraction, multiplication, and division prims within header.cpp. Four tests were written to test this error. The first test attempts to intialilze an LLVM integer larger than INT_MAX, the second test attempts to multiply two numbers whose product is greater than INT_MAX, the third test attempts to divide INT_MIN by -1, and the fourth test attempts to  add two numberse whose sum is greater than INT_MAX. The binaries produced in all cases correctly throw runtime errors. 
+> When converting a Racket number to an LLVM integer, the compiler inserts a run-time error if the Racket number is greater than the maximum LLVM integer size or less than the minimum LLVM integer size. Additional checks are also added to the addition, subtraction, multiplication, and division prims within header.cpp. For instance, when adding two numbers A and B, it will throw an overflow error if A is greater than INT_MAX - B or if A is less than INT_MIN + B. Similar checks are used for the other operators. Four tests were written to test this error, overflow-1.fail, overflow-2.fail, overflow-3.fail, and overflow-4.fail. The first test attempts to intialilze an LLVM integer larger than INT_MAX, the second test attempts to multiply two numbers whose product is greater than INT_MAX, the third test attempts to divide INT_MIN by -1, and the fourth test attempts to  add two numbers whose sum is greater than INT_MAX. The binaries produced in all cases correctly throw runtime errors. 
 
 ### Additional Feature: Mutable Hash Table
 
@@ -183,7 +183,15 @@ I used Troy D. Hanson's uthash, which is a C implementation for hashes, to imple
 >
 >Returns the value for key in the hash table.
 
+### Boehm GC
 
+Unfortunately, I did not have time to integrate the Boehm GC. 
+
+### Academic Integrity Pledge
+
+I pledge on my honor that I have not given or received any unauthorized assistance on this assignment.
+
+Nathan Li
 
 ### Resources Used:
 
